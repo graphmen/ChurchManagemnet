@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Circular container with soft warm background -->
+  <circle cx="50" cy="50" r="42" fill="#FFF3E0" stroke="#FFB74D" stroke-width="3"/>
+  
+  <!-- Stylized House roof/outline -->
+  <path d="M 22 45 L 50 22 L 78 45" fill="none" stroke="#E65100" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Cross on top of the roof -->
+  <path d="M 50 12 L 50 22" stroke="#FFB300" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 46 16 L 54 16" stroke="#FFB300" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Heart shape outline enclosing the family -->
+  <path d="M 50 78 C 30 65, 20 46, 35 36 C 44 30, 50 40, 50 40 C 50 40, 56 30, 65 36 C 80 46, 70 65, 50 78 Z" fill="none" stroke="#E53935" stroke-width="2" stroke-dasharray="1.5 1.5"/>
+
+  <!-- Silhouette Figures (Father, Mother, Child) -->
+  <!-- Father (Left, Blue) -->
+  <circle cx="40" cy="48" r="4.5" fill="#1E88E5"/>
+  <path d="M 40 52.5 C 34 52.5, 34 72, 40 72 C 43 72, 44 64, 44 58 Z" fill="#1E88E5"/>
+  
+  <!-- Mother (Right, Magenta/Pink) -->
+  <circle cx="60" cy="49" r="4.5" fill="#EC4899"/>
+  <path d="M 60 53.5 C 66 53.5, 66 72, 60 72 C 57 72, 56 64, 56 59 Z" fill="#EC4899"/>
+  
+  <!-- Child (Center, Green) -->
+  <circle cx="50" cy="57" r="3" fill="#4CAF50"/>
+  <path d="M 50 60 C 46 60, 46 72, 50 72 C 54 72, 54 60, 50 60 Z" fill="#4CAF50"/>
+  
+  <!-- Family holding hands (connecting curves) -->
+  <path d="M 42 58 Q 50 60 58 59" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+</svg>

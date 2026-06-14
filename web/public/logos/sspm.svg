@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Blue Globe background -->
+  <circle cx="50" cy="55" r="32" fill="#E3F2FD" stroke="#1E88E5" stroke-width="1.5"/>
+  <ellipse cx="50" cy="55" rx="32" ry="10" fill="none" stroke="#90CAF9" stroke-width="1"/>
+  <ellipse cx="50" cy="55" rx="10" ry="32" fill="none" stroke="#90CAF9" stroke-width="1"/>
+  
+  <!-- Stylized open Bible on top -->
+  <!-- Left page -->
+  <path d="M 50 64 C 42 62, 28 62, 22 66 L 22 46 C 28 42, 42 42, 50 44 Z" fill="#FFFFFF" stroke="#1E88E5" stroke-width="1"/>
+  <path d="M 50 64 C 42 62, 28 62, 22 66 L 22 47 C 28 43, 42 43, 50 45 Z" fill="none" stroke="#B0BEC5" stroke-width="0.5"/>
+  <!-- Right page -->
+  <path d="M 50 64 C 58 62, 72 62, 78 66 L 78 46 C 72 42, 58 42, 50 44 Z" fill="#FFFFFF" stroke="#1E88E5" stroke-width="1"/>
+  <path d="M 50 64 C 58 62, 72 62, 78 66 L 78 47 C 72 43, 58 43, 50 45 Z" fill="none" stroke="#B0BEC5" stroke-width="0.5"/>
+  
+  <!-- Ribbon/Bookmark hanging down -->
+  <path d="M 49 64 L 49 76 L 51 76 L 51 64 Z" fill="#D32F2F"/>
+
+  <!-- Flame rising from the Bible -->
+  <!-- Left flame shape (yellow-gold) -->
+  <path d="M 50 42 C 45 35, 42 28, 48 18 C 42 26, 46 34, 50 38 Z" fill="#FFC107"/>
+  <!-- Center flame shape (red-orange) -->
+  <path d="M 50 44 C 47 34, 50 22, 54 14 C 56 24, 52 36, 50 44 Z" fill="#FF5722"/>
+  <!-- Right flame shape (yellow) -->
+  <path d="M 50 42 C 55 35, 58 28, 52 18 C 58 26, 54 34, 50 38 Z" fill="#FFD54F"/>
+</svg>

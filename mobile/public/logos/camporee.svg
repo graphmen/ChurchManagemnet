@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Outer circle with amber/orange background -->
+  <circle cx="50" cy="50" r="42" fill="#E65100" stroke="#FFB300" stroke-width="3"/>
+  
+  <!-- Stylized Tent -->
+  <polygon points="50,25 25,70 75,70" fill="#FFE082" stroke="#FFB300" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Tent flaps / Opening -->
+  <polygon points="50,25 50,70 75,70" fill="#FFD54F" opacity="0.7"/>
+  <polygon points="50,45 38,70 62,70" fill="#5D4037"/>
+
+  <!-- Campfire in front of the tent -->
+  <!-- Crossed logs -->
+  <line x1="42" y1="75" x2="58" y2="70" stroke="#3E2723" stroke-width="3" stroke-linecap="round"/>
+  <line x1="58" y1="75" x2="42" y2="70" stroke="#3E2723" stroke-width="3" stroke-linecap="round"/>
+  <!-- Fire Flame -->
+  <path d="M 50 63 C 50 63, 56 68, 50 78 C 44 68, 50 63 Z" fill="#FF3D00"/>
+  <path d="M 50 67 C 50 67, 53 71, 50 77 C 47 71, 50 67 Z" fill="#FFEA00"/>
+  
+  <!-- Stars in the night sky (upper part of tent) -->
+  <circle cx="35" cy="35" r="1.2" fill="#FFFFFF"/>
+  <circle cx="65" cy="32" r="1.5" fill="#FFFFFF"/>
+  <circle cx="50" cy="18" r="1.8" fill="#FFFFFF"/>
+</svg>

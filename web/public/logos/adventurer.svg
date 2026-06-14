@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Definitions for clipping -->
+  <defs>
+    <clipPath id="shield-clip">
+      <path d="M 18 18 L 82 18 C 82 18, 82 58, 50 85 C 18 58, 18 18, 18 18 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background Quadrants clipped to Shield Shape -->
+  <g clip-path="url(#shield-clip)">
+    <!-- Top-Left (Royal Blue) -->
+    <rect x="0" y="0" width="50" height="50" fill="#0D47A1"/>
+    <!-- Top-Right (Scarlet Red) -->
+    <rect x="50" y="0" width="50" height="50" fill="#C62828"/>
+    <!-- Bottom Half (Green Hill) -->
+    <path d="M 0 48 Q 50 38 100 48 L 100 100 L 0 100 Z" fill="#2E7D32"/>
+  </g>
+
+  <!-- Central White Cross -->
+  <!-- Vertical Bar -->
+  <rect x="46" y="22" width="8" height="52" fill="#FFFFFF" rx="1" clip-path="url(#shield-clip)"/>
+  <!-- Horizontal Bar -->
+  <rect x="24" y="38" width="52" height="8" fill="#FFFFFF" rx="1" clip-path="url(#shield-clip)"/>
+
+  <!-- Family Silhouette in center (Dark Forest Green/Navy) -->
+  <g fill="#1A2E1A" transform="translate(34, 32)">
+    <!-- Father -->
+    <circle cx="10" cy="5" r="2"/>
+    <path d="M 8 8 L 12 8 L 11 18 L 9 18 Z"/>
+    
+    <!-- Mother -->
+    <circle cx="18" cy="5.5" r="1.8"/>
+    <path d="M 16 8.5 L 20 8.5 L 21 16 L 15 16 Z"/>
+    <path d="M 16.5 16 L 17.5 18 M 18.5 16 L 19.5 18" stroke="#1A2E1A" stroke-width="1"/>
+    
+    <!-- Boy -->
+    <circle cx="3" cy="9" r="1.5"/>
+    <path d="M 1.5 11.5 L 4.5 11.5 L 4 18 L 2 18 Z"/>
+    
+    <!-- Girl -->
+    <circle cx="25" cy="9.5" r="1.4"/>
+    <path d="M 23 12 L 27 12 L 28 17 L 22 17 Z"/>
+    
+    <!-- Arms holding hands -->
+    <path d="M 3.5 13 C 5 12, 7 10, 9 9.5" stroke="#1A2E1A" stroke-width="1" stroke-linecap="round" fill="none"/>
+    <path d="M 11 9.5 C 13 9, 15 9, 17 9.5" stroke="#1A2E1A" stroke-width="1" stroke-linecap="round" fill="none"/>
+    <path d="M 19 9.5 C 21 10, 23 12, 24.5 13" stroke="#1A2E1A" stroke-width="1" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Gold Border of the Shield -->
+  <path d="M 18 18 L 82 18 C 82 18, 82 58, 50 85 C 18 58, 18 18, 18 18 Z" fill="none" stroke="#FFD54F" stroke-width="4" stroke-linejoin="round"/>
+</svg>

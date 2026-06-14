@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Outer Gold/Yellow Ring with Green Fill -->
+  <circle cx="50" cy="50" r="42" fill="#2E7D32" stroke="#FFD54F" stroke-width="4"/>
+  <circle cx="50" cy="50" r="37" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.3"/>
+
+  <!-- Left Side: Globe lines -->
+  <g opacity="0.4">
+    <path d="M 18 50 A 32 32 0 0 0 48 50" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <path d="M 21 35 A 32 32 0 0 0 48 38" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+    <path d="M 21 65 A 32 32 0 0 0 48 62" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+    <path d="M 35 18 C 38 30, 38 70, 35 82" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+    <path d="M 25 25 C 28 35, 28 65, 25 75" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+  </g>
+
+  <!-- Right Side: Three Flying Angels (blowing trumpets, flying to the right) -->
+  <g fill="#FFD54F" opacity="0.95" stroke="#1B5E20" stroke-width="0.5">
+    <!-- Angel 1 (Top Right) -->
+    <path d="M 58 24 C 60 22, 62 23, 63 25 L 75 22 L 74 24 L 64 26 L 68 29 L 58 31 Z" />
+    
+    <!-- Angel 2 (Middle Right) -->
+    <path d="M 60 38 C 62 36, 64 37, 65 39 L 77 36 L 76 38 L 66 40 L 70 43 L 60 45 Z" />
+    
+    <!-- Angel 3 (Bottom Right) -->
+    <path d="M 58 52 C 60 50, 62 51, 63 53 L 75 50 L 74 52 L 64 54 L 68 57 L 58 59 Z" />
+  </g>
+
+  <!-- Center: Gold Cross -->
+  <path d="M 47.5 16 L 52.5 16 L 52.5 78 L 47.5 78 Z" fill="#FFD54F" stroke="#1B5E20" stroke-width="0.75"/>
+  <path d="M 32 34 L 68 34 L 68 39 L 32 39 Z" fill="#FFD54F" stroke="#1B5E20" stroke-width="0.75"/>
+
+  <!-- Letters "A" and "Y" in bold white -->
+  <text x="26" y="60" font-family="'Arial Black', sans-serif" font-weight="900" font-size="20" fill="#FFFFFF" stroke="#1B5E20" stroke-width="1">A</text>
+  <text x="68" y="60" font-family="'Arial Black', sans-serif" font-weight="900" font-size="20" fill="#FFFFFF" stroke="#1B5E20" stroke-width="1">Y</text>
+</svg>

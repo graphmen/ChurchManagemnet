@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import 'leaflet/dist/leaflet.css';
+@import "tailwindcss";
+
+
+/* ─── CSS Variables ─────────────────────────────────────────────────────── */
+:root {
+  font-family: 'Inter', sans-serif;
+  color-scheme: light;
+  --sda-green: #2E7D32;
+  --sda-green-light: #4CAF50;
+  --sda-gold: #FFC107;
+  --ezc-text: #1A2E1A;
+  --ezc-bg: #F0F4F0;
+  --sidebar-bg: #11321c;
+}
+
+/* ─── Base ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--ezc-bg);
+  color: var(--ezc-text);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--sda-green); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Map ───────────────────────────────────────────────────────────────── */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #e8f0e8;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  padding: 0 !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15) !important;
+  border: 1px solid #e0e0e0 !important;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+}
+
+.leaflet-popup-tip-container { display: none; }
+
+.leaflet-tooltip {
+  border-radius: 8px !important;
+  border: none !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+  padding: 8px 12px !important;
+  background: white !important;
+}
+
+/* ─── Form Helper Classes ───────────────────────────────────────────────── */
+/* @layer components */
+  .field {
+    @apply w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-[#1A2E1A] font-medium outline-none transition-all;
+    @apply focus:border-[#2E7D32] focus:ring-2 focus:ring-[#2E7D32]/10;
+  }
+
+  .field:focus {
+    border-color: var(--sda-green);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.08);
+  }
+
+  textarea.field {
+    @apply resize-none;
+  }
+
+  select.field {
+    @apply cursor-pointer;
+  }
+
+  .label-sm {
+    @apply block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1.5;
+  }
+
+  .btn-primary {
+    @apply flex items-center gap-2 bg-[#2E7D32] hover:bg-[#388E3C] text-white px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wider transition-all active:scale-95 shadow-lg;
+    box-shadow: 0 4px 16px rgba(46, 125, 50, 0.25);
+  }
+
+  .btn-secondary {
+    @apply flex items-center gap-2 bg-white border-2 border-[#2E7D32] text-[#2E7D32] px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wider transition-all hover:bg-[#F0F8F0] active:scale-95;
+  }
+
+  .btn-danger {
+    @apply flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wider transition-all active:scale-95;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-5;
+  }
+
+  .stat-card {
+    @apply bg-white rounded-2xl p-5 shadow-sm border border-gray-100;
+  }
+
+  .badge-green {
+    @apply px-2 py-0.5 rounded-lg text-[10px] font-black uppercase bg-green-100 text-green-700;
+  }
+
+  .badge-amber {
+    @apply px-2 py-0.5 rounded-lg text-[10px] font-black uppercase bg-amber-100 text-amber-700;
+  }
+
+  .badge-red {
+    @apply px-2 py-0.5 rounded-lg text-[10px] font-black uppercase bg-red-100 text-red-600;
+  }
+
+  .badge-blue {
+    @apply px-2 py-0.5 rounded-lg text-[10px] font-black uppercase bg-blue-100 text-blue-700;
+  }
+
+
+/* ─── Animations ────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fadeIn 0.3s ease forwards; }
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(46, 125, 50, 0); }
+}
+
+.pulse-green { animation: pulse-green 2s infinite; }
+
+/* ─── Print styles ──────────────────────────────────────────────────────── */
+@media print {
+  aside, header button { display: none !important; }
+  main { padding: 0 !important; }
+}

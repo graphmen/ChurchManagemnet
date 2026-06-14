@@ -46,3 +46,7 @@ pip-delete-this-directory.txt
 # GIS Cache
 cache/
 tmp/
+
+# Android Binaries
+*.apk
+
