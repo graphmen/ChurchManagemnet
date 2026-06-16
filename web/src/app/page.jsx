@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   Map as MapIcon, LayoutDashboard, Users, Church, Heart, Target,
   Home, ShieldAlert, UserCog, LogOut, Menu, X, Search, Bell,
-  ChevronRight, Settings, BookOpen, Layers, ClipboardList, Compass, Landmark
+  ChevronRight, Settings, BookOpen, Layers, ClipboardList, Compass, Landmark,
+  Smartphone
 } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth, supabase } from '../context/AuthContext';
@@ -27,6 +28,7 @@ import ChildrenDashboard from '../components/ChildrenDashboard';
 import StewardshipDashboard from '../components/StewardshipDashboard';
 import CommunityMinistries from '../components/CommunityMinistries';
 import MandEAudit from '../components/MandEAudit';
+import MobileDownload from '../components/MobileDownload';
 const ReportsAnalytics = dynamic(() => import('../components/ReportsAnalytics'), {
   ssr: false,
   loading: () => <div className="h-full w-full flex items-center justify-center bg-gray-50 text-gray-500 font-bold">Loading Analytics...</div>
@@ -52,6 +54,7 @@ const NAV_ITEMS = [
   { id: 'properties', label: 'Properties', icon: Home, section: 'assets' },
   { id: 'emergency', label: 'Emergency Response', icon: ShieldAlert, section: 'tools' },
   { id: 'm_and_e', label: 'M&E & System Audit', icon: ShieldAlert, section: 'tools', adminOnly: true },
+  { id: 'mobile_app', label: 'Mobile App', icon: Smartphone, section: 'tools' },
 ];
 
 const SECTION_LABELS = {
@@ -300,6 +303,7 @@ function AppShell() {
       case 'properties': return <div className="p-6 md:p-8"><PropertiesPage churches={churches} /></div>;
       case 'emergency': return <div className="p-6 md:p-8"><EmergencyPage /></div>;
       case 'm_and_e': return <div className="p-6 md:p-8"><MandEAudit /></div>;
+      case 'mobile_app': return <div className="p-6 md:p-8"><MobileDownload /></div>;
       case 'reports': return (
         <div className="p-6 md:p-8">
           <ReportsAnalytics selectedDistrict={null} filterPastor="" churches={churches} />
