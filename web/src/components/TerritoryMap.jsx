@@ -257,6 +257,30 @@ function LayerControlPanel({ basemap, onBasemap, layers, onLayer, zoom }) {
                 🔍 Zoom in past level 10 for wards
               </div>
             )}
+
+            {/* Church zoom hint */}
+            {layers.churches && zoom < 13 && (
+              <div style={{
+                marginTop:8,
+                background:'rgba(76,175,80,0.18)', borderRadius:8,
+                padding:'5px 9px', fontSize:10,
+                color:'rgba(255,255,255,0.5)', textAlign:'center',
+              }}>
+                🔍 Zoom in past level 13 for Churches
+              </div>
+            )}
+
+            {/* Church boundaries zoom hint */}
+            {layers.church && zoom < 13 && (
+              <div style={{
+                marginTop:8,
+                background:'rgba(255,109,0,0.18)', borderRadius:8,
+                padding:'5px 9px', fontSize:10,
+                color:'rgba(255,255,255,0.5)', textAlign:'center',
+              }}>
+                🔍 Zoom in past level 13 for Church Territories
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -481,11 +505,11 @@ export default function TerritoryMap({
         {/* Wards (lazy, zoom ≥ 10) */}
         {layers.wards && wardData && zoom >= 10 && <GeoJSON key="wards" data={wardData} style={wardStyle} onEachFeature={onEachWard} />}
 
-        {/* Church Territories */}
-        {layers.church && churchTerritories && <GeoJSON key="church" data={churchTerritories} style={churchTerStyle} onEachFeature={onEachChurchTer} />}
+        {/* Church Territories (zoom ≥ 13) */}
+        {layers.church && churchTerritories && zoom >= 13 && <GeoJSON key="church" data={churchTerritories} style={churchTerStyle} onEachFeature={onEachChurchTer} />}
 
-        {/* Church markers (zoom ≥ 9) */}
-        {layers.churches && zoom >= 9 && churches.map(church => {
+        {/* Church markers (zoom ≥ 13) */}
+        {layers.churches && zoom >= 13 && churches.map(church => {
           const geom = typeof church.geom === 'string' ? JSON.parse(church.geom) : church.geom;
           if (!geom?.coordinates) return null;
           return (
