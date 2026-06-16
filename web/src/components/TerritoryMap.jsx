@@ -88,6 +88,178 @@ function ScaleBarControl() {
 }
 
 // ─────────────────────────────────────────────
+// SEARCH CONTROL
+// ─────────────────────────────────────────────
+function SearchControl({ harareData, churches, onSelectBoundary, setSelectedChurch }) {
+  const map = useMap();
+  const [query, setQuery] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+
+  const districts = harareData?.features || [];
+  
+  const filteredDistricts = query.trim() === '' ? [] : districts.filter(d => {
+    const name = d.properties?.District || d.properties?.name || '';
+    return name.toLowerCase().includes(query.toLowerCase());
+  });
+
+  const filteredChurches = query.trim() === '' ? [] : churches.filter(c => {
+    return c.name?.toLowerCase().includes(query.toLowerCase());
+  });
+
+  const handleSelectDistrict = (d) => {
+    const bounds = L.geoJSON(d).getBounds();
+    if (bounds.isValid()) {
+      map.flyToBounds(bounds, { padding: [50, 50], duration: 1.5 });
+      onSelectBoundary(d.properties);
+    }
+    setQuery('');
+    setIsOpen(false);
+  };
+
+  const handleSelectChurch = (c) => {
+    const geom = typeof c.geom === 'string' ? JSON.parse(c.geom) : c.geom;
+    if (geom?.coordinates) {
+      const latlng = [geom.coordinates[1], geom.coordinates[0]];
+      map.flyTo(latlng, 15, { duration: 1.5 });
+      setSelectedChurch(c);
+    }
+    setQuery('');
+    setIsOpen(false);
+  };
+
+  return (
+    <div style={{ position: 'absolute', top: 10, left: 50, zIndex: 1001, width: 220 }}>
+      <div className="glass-control" style={{ display: 'flex', alignItems: 'center', padding: '4px 8px', gap: 6 }}>
+        <span style={{ fontSize: 14 }}>🔍</span>
+        <input
+          type="text"
+          placeholder="Search district or church..."
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setIsOpen(e.target.value.trim() !== '');
+          }}
+          onFocus={() => setIsOpen(query.trim() !== '')}
+          className="glass-input"
+          style={{ width: '100%', border: 'none', background: 'transparent', padding: '4px 2px', fontSize: 11 }}
+        />
+        {query && (
+          <button onClick={() => { setQuery(''); setIsOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#aaa', cursor: 'pointer', fontSize: 10 }}>
+            ✕
+          </button>
+        )}
+      </div>
+
+      {isOpen && (filteredDistricts.length > 0 || filteredChurches.length > 0) && (
+        <div className="glass-dropdown" style={{ position: 'absolute', top: 38, left: 0, width: '100%', zIndex: 1002 }}>
+          {filteredDistricts.length > 0 && (
+            <div>
+              <div style={{ padding: '6px 10px 3px', fontSize: 9, fontWeight: 800, color: '#FFC107', textTransform: 'uppercase', letterSpacing: 0.8 }}>
+                Districts
+              </div>
+              {filteredDistricts.map((d, idx) => {
+                const name = d.properties?.District || d.properties?.name || 'Unknown';
+                return (
+                  <div key={`d-${idx}`} onClick={() => handleSelectDistrict(d)} className="glass-dropdown-item">
+                    📍 {name}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {filteredChurches.length > 0 && (
+            <div>
+              <div style={{ padding: '6px 10px 3px', fontSize: 9, fontWeight: 800, color: '#4CAF50', textTransform: 'uppercase', letterSpacing: 0.8, borderTop: filteredDistricts.length > 0 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+                Churches
+              </div>
+              {filteredChurches.map((c) => (
+                <div key={`c-${c.id}`} onClick={() => handleSelectChurch(c)} className="glass-dropdown-item">
+                  ⛪ {c.name}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// GEOLOCATION CONTROL
+// ─────────────────────────────────────────────
+function LocateMeControl() {
+  const map = useMap();
+  const [locating, setLocating] = useState(false);
+  const [locLayer, setLocLayer] = useState(null);
+
+  const handleLocate = () => {
+    setLocating(true);
+    map.locate({ setView: true, maxZoom: 16 });
+  };
+
+  useEffect(() => {
+    const onLocationFound = (e) => {
+      setLocating(false);
+      if (locLayer) {
+        locLayer.remove();
+      }
+      
+      const accuracyCircle = L.circle(e.latlng, {
+        radius: e.accuracy,
+        fillColor: '#2196F3',
+        fillOpacity: 0.15,
+        color: '#2196F3',
+        weight: 1
+      });
+
+      const pinMarker = L.circleMarker(e.latlng, {
+        radius: 8,
+        fillColor: '#2196F3',
+        color: '#ffffff',
+        weight: 2.5,
+        fillOpacity: 0.95
+      });
+
+      const group = L.layerGroup([accuracyCircle, pinMarker]).addTo(map);
+      setLocLayer(group);
+    };
+
+    const onLocationError = () => {
+      setLocating(false);
+      alert('Could not retrieve your location. Make sure GPS permissions are enabled.');
+    };
+
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+
+    return () => {
+      map.off('locationfound', onLocationFound);
+      map.off('locationerror', onLocationError);
+    };
+  }, [map, locLayer]);
+
+  return (
+    <div style={{ position: 'absolute', top: 90, left: 10, zIndex: 1001 }}>
+      <button
+        onClick={handleLocate}
+        className="glass-button"
+        title="Locate Me"
+        style={{
+          width: 32,
+          height: 32,
+          fontSize: 16,
+          boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+        }}
+      >
+        {locating ? '⏳' : '🎯'}
+      </button>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
 // TOGGLE SWITCH
 // ─────────────────────────────────────────────
 function ToggleSwitch({ checked, onChange, color }) {
@@ -341,6 +513,7 @@ export default function TerritoryMap({
   // UI
   const [zoom, setZoom]     = useState(11);
   const [coords, setCoords] = useState(null);
+  const [selectedChurch, setSelectedChurch] = useState(null);
 
   // ── Data Loading ──
   useEffect(() => {
@@ -387,26 +560,46 @@ export default function TerritoryMap({
 
   const provincialStyle = useCallback(f => {
     const c = pColor(f.properties?.province_n || '');
-    return { fillColor:c, weight:2.5, color:c, opacity:0.85, fillOpacity:0.15 };
+    return { fillColor:c, weight:2.5, color:c, opacity:0.85, fillOpacity:0.12 };
   }, []);
 
   const onEachProvince = useCallback((f, layer) => {
     const n = f.properties?.province_n || 'Province';
     const p = f.properties?.population;
-    layer.bindTooltip(`<div style="font-family:sans-serif;font-size:12px;font-weight:800;color:#1a2e1a">${n}${p ? `<br/><span style="font-weight:500;color:#555;font-size:10px">${Math.round(p/1000)}K pop.</span>` : ''}</div>`, { sticky:true, opacity:0.95 });
-    layer.on({ mouseover: e => e.target.setStyle({ fillOpacity:0.38, weight:3.5 }), mouseout: e => e.target.setStyle(provincialStyle(f)) });
+    const tooltipContent = `
+      <div style="font-weight:800;font-size:12px;">🗺️ ${n}</div>
+      ${p ? `<div style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:2px;">👥 ${Math.round(p/1000)}K pop.</div>` : ''}
+    `;
+    layer.bindTooltip(tooltipContent, { sticky:true, opacity:0.98, className: 'custom-tooltip' });
+    layer.on({ 
+      mouseover: e => {
+        e.target.setStyle({ fillOpacity:0.3, weight:3.5 });
+        e.target.bringToFront();
+      }, 
+      mouseout: e => e.target.setStyle(provincialStyle(f)) 
+    });
   }, [provincialStyle]);
 
   const districtStyle = useCallback(f => {
     const c = dColor(f.properties?.district_n || f.properties?.name || '');
-    return { fillColor:c, weight:1.5, color:c, opacity:0.7, fillOpacity:0.12 };
+    return { fillColor:c, weight:2, color:c, opacity:0.8, fillOpacity:0.1 };
   }, []);
 
   const onEachDistrict = useCallback((f, layer) => {
     const n = f.properties?.district_n || f.properties?.name || 'District';
     const p = f.properties?.province || '';
-    layer.bindTooltip(`<div style="font-family:sans-serif;font-size:11px;font-weight:800;color:#1a2e1a">${n}<br/><span style="font-weight:500;color:#666;font-size:10px">${p}</span></div>`, { sticky:true, opacity:0.95 });
-    layer.on({ mouseover: e => e.target.setStyle({ fillOpacity:0.38, weight:2.5 }), mouseout: e => e.target.setStyle(districtStyle(f)) });
+    const tooltipContent = `
+      <div style="font-weight:800;font-size:11px;">🏢 ${n}</div>
+      ${p ? `<div style="font-size:9px;color:rgba(255,255,255,0.7);margin-top:2px;">📍 ${p}</div>` : ''}
+    `;
+    layer.bindTooltip(tooltipContent, { sticky:true, opacity:0.98, className: 'custom-tooltip' });
+    layer.on({ 
+      mouseover: e => {
+        e.target.setStyle({ fillOpacity:0.25, weight:3 });
+        e.target.bringToFront();
+      }, 
+      mouseout: e => e.target.setStyle(districtStyle(f)) 
+    });
   }, [districtStyle]);
 
   const harareStyle = useCallback(f => {
@@ -417,10 +610,10 @@ export default function TerritoryMap({
     const c      = dColor(name);
     return {
       fillColor:   isUn ? '#607D8B' : c,
-      weight:      isSel ? 4 : 2, opacity: 1,
-      color:       isSel ? '#FFC107' : (isUn ? '#90A4AE' : '#fff'),
+      weight:      isSel ? 4.5 : 3, opacity: 1,
+      color:       isSel ? '#FFC107' : (isUn ? '#90A4AE' : c),
       dashArray:   isUn ? '6,4' : '',
-      fillOpacity: isSel ? 0.55 : (isUn ? 0.2 : 0.35),
+      fillOpacity: isSel ? 0.45 : (isUn ? 0.15 : 0.25),
     };
   }, [selectedBoundary]);
 
@@ -428,16 +621,27 @@ export default function TerritoryMap({
     const name   = f.properties?.District || 'Unknown';
     const pastor = f.properties?.Pastor;
     layer.on({
-      mouseover: e => e.target.setStyle({ fillOpacity:0.6, weight:3 }),
+      mouseover: e => {
+        const isSel = selectedBoundary?.District === name;
+        e.target.setStyle({ fillOpacity: 0.5, weight: isSel ? 4.5 : 4, color: isSel ? '#FFC107' : dColor(name) });
+        e.target.bringToFront();
+      },
       mouseout:  e => e.target.setStyle(harareStyle(f)),
       click:     () => onSelectBoundary?.(f.properties),
     });
-    layer.bindTooltip(`<div style="font-family:sans-serif;font-size:11px;font-weight:800;color:#1a2e1a">${name}<br/><span style="font-weight:600;color:${pastor ? '#2E7D32' : '#f44336'}">${pastor ? `🙏 Pastor ${pastor}` : '⚠ Unassigned'}</span></div>`, { sticky:true, opacity:0.95 });
-  }, [harareStyle, onSelectBoundary]);
+    
+    const tooltipContent = `
+      <div style="font-weight: 800; font-size: 12px; margin-bottom: 2px;">📍 ${name}</div>
+      <div style="font-size: 10px; color: ${pastor ? '#A5D6A7' : '#FFCDD2'}; font-weight: 700;">
+        ${pastor ? `🙏 Pastor ${pastor}` : '⚠ Unassigned'}
+      </div>
+    `;
+    layer.bindTooltip(tooltipContent, { sticky: true, opacity: 0.98, className: 'custom-tooltip' });
+  }, [harareStyle, onSelectBoundary, selectedBoundary]);
 
   const onEachWard = useCallback((f, layer) => {
     const n = f.properties?.ward_name || f.properties?.WARD_NAME || f.properties?.name || 'Ward';
-    layer.bindTooltip(`<div style="font-family:sans-serif;font-size:10px;font-weight:700;color:#37474F">${n}</div>`, { sticky:true, opacity:0.9 });
+    layer.bindTooltip(`<div style="font-weight:700;font-size:10px;">📋 ${n}</div>`, { sticky:true, opacity:0.98, className: 'custom-tooltip' });
   }, []);
 
   const churchTerStyle = useCallback(f => {
@@ -449,10 +653,17 @@ export default function TerritoryMap({
     const ch = f.properties?.church_name || f.properties?.name || 'Church';
     const di = f.properties?.district || '';
     layer.on({
-      mouseover: e => e.target.setStyle({ fillOpacity:0.48, weight:2.5 }),
+      mouseover: e => {
+        e.target.setStyle({ fillOpacity:0.4, weight:2.5 });
+        e.target.bringToFront();
+      },
       mouseout:  e => e.target.setStyle(churchTerStyle(f)),
     });
-    layer.bindTooltip(`<div style="font-family:sans-serif;font-size:11px;font-weight:800;color:#BF360C">⛪ ${ch}${di ? `<br/><span style="font-weight:500;color:#666;font-size:10px">${di}</span>` : ''}</div>`, { sticky:true, opacity:0.95 });
+    const tooltipContent = `
+      <div style="font-weight:800;font-size:11px;">⛪ ${ch}</div>
+      ${di ? `<div style="font-size:9px;color:rgba(255,255,255,0.7);margin-top:2px;">🏢 ${di} District</div>` : ''}
+    `;
+    layer.bindTooltip(tooltipContent, { sticky:true, opacity:0.98, className: 'custom-tooltip' });
     layer.bindPopup(`<div style="font-family:sans-serif;min-width:180px;padding:5px 3px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><img src="/sda_logo.svg" style="width:22px;height:22px"/><strong style="font-size:12px;color:#BF360C">${ch}</strong></div>${di ? `<p style="font-size:10px;color:#888;margin:0">📍 ${di} District</p>` : ''}</div>`);
   }, [churchTerStyle]);
 
@@ -482,6 +693,13 @@ export default function TerritoryMap({
         <CoordTracker onMove={setCoords} />
         <ScaleBarControl />
         <AutoFocusHarare harareData={harareData} />
+        <LocateMeControl />
+        <SearchControl 
+          harareData={harareData} 
+          churches={churches} 
+          onSelectBoundary={onSelectBoundary} 
+          setSelectedChurch={setSelectedChurch} 
+        />
 
         {/* Zimbabwe outline */}
         {zimBoundary && (
@@ -513,7 +731,18 @@ export default function TerritoryMap({
           const geom = typeof church.geom === 'string' ? JSON.parse(church.geom) : church.geom;
           if (!geom?.coordinates) return null;
           return (
-            <Marker key={church.id} position={[geom.coordinates[1], geom.coordinates[0]]} icon={churchIcon}>
+            <Marker 
+              key={church.id} 
+              position={[geom.coordinates[1], geom.coordinates[0]]} 
+              icon={churchIcon}
+              ref={ref => {
+                if (ref && selectedChurch?.id === church.id) {
+                  if (!ref.isPopupOpen()) {
+                    setTimeout(() => ref.openPopup(), 100);
+                  }
+                }
+              }}
+            >
               <Popup>
                 <div style={{ minWidth:200, padding:'4px 2px', fontFamily:'sans-serif' }}>
                   <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>

@@ -249,26 +249,28 @@ function AppShell() {
       case 'map': return (
         <div className="h-full flex flex-col">
           {/* Map Layer Controls */}
-          <div className="bg-white border-b border-gray-100 px-4 py-2 flex flex-wrap items-center gap-3 shrink-0">
-            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Layers:</span>
+          <div className="bg-white/95 backdrop-blur-md border-b border-gray-100/80 px-6 py-3 flex flex-wrap items-center gap-4 shrink-0 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]">
+            <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mr-1">Layers:</span>
             {[
-              { key: 'showBoundaries', label: 'Boundaries', state: showBoundaries, set: setShowBoundaries },
-              { key: 'showMembers', label: 'Members', state: showMembers, set: setShowMembers },
-              { key: 'showProperties', label: 'Properties', state: showProperties, set: setShowProperties },
-              { key: 'showGroups', label: 'Small Groups', state: showGroups, set: setShowGroups },
-            ].map(({ key, label, state, set }) => (
+              { key: 'showBoundaries', label: 'Boundaries', state: showBoundaries, set: setShowBoundaries, Icon: Layers },
+              { key: 'showMembers', label: 'Members', state: showMembers, set: setShowMembers, Icon: Users },
+              { key: 'showProperties', label: 'Properties', state: showProperties, set: setShowProperties, Icon: Home },
+              { key: 'showGroups', label: 'Small Groups', state: showGroups, set: setShowGroups, Icon: Heart },
+            ].map(({ key, label, state, set, Icon }) => (
               <button key={key} onClick={() => set(!state)}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border transition-all ${
-                  state ? 'bg-[#2E7D32] text-white border-[#2E7D32]' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all duration-200 active:scale-[0.97] cursor-pointer ${
+                  state 
+                    ? 'bg-gradient-to-r from-[#2E7D32] to-[#388E3C] text-white border-transparent shadow-[0_4px_14px_rgba(46,125,50,0.25)]' 
+                    : 'bg-white text-gray-500 border-gray-200/80 hover:bg-gray-50 hover:text-gray-700 hover:border-gray-300 hover:shadow-sm'
                 }`}>
-                <Layers size={11} /> {label}
+                <Icon size={12} className={state ? 'animate-pulse' : ''} /> {label}
               </button>
             ))}
             {selectedBoundary && (
-              <div className="ml-auto flex items-center gap-2 bg-[#E8F0E8] border border-[#2E7D32] px-3 py-1 rounded-lg">
+              <div className="ml-auto flex items-center gap-2.5 bg-[#E8F0E8]/70 backdrop-blur border border-[#2E7D32]/20 px-4 py-2 rounded-xl shadow-[0_2px_8px_rgba(46,125,50,0.05)]">
                 <span className="text-xs font-black text-[#2E7D32]">📍 {selectedBoundary.District}</span>
-                {selectedBoundary.Pastor && <span className="text-xs text-gray-600">· Pastor {selectedBoundary.Pastor}</span>}
-                <button onClick={() => setSelectedBoundary(null)} className="text-gray-400 hover:text-gray-600"><X size={12} /></button>
+                {selectedBoundary.Pastor && <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">· Pastor {selectedBoundary.Pastor}</span>}
+                <button onClick={() => setSelectedBoundary(null)} className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-1 rounded-lg transition-all"><X size={12} /></button>
               </div>
             )}
           </div>
